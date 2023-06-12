@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\ServiceRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Repositories\BronRepository;
-use App\Http\Requests\BronCreateRequest;
 
-class BronController extends Controller
+class TestController extends Controller
 {
-    private $repo;
-
+    private $r;
     public function __construct()
     {
-        $this->repo = new BronRepository();
+        $this->r = new ServiceRepository();
     }
 
     /**
@@ -23,7 +20,7 @@ class BronController extends Controller
      */
     public function index()
     {
-        return $this->repo->all(\auth()->user()->filial_id);
+        return $this->r->all(0);
     }
 
     /**
@@ -42,20 +39,20 @@ class BronController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BronCreateRequest $request)
+    public function store(Request $request)
     {
-        $this->repo->create(\auth()->user()->filial_id,$request);
-        return response(['message'=>'success created']);
+        //
     }
 
     /**
      * Display the specified resource.
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        return $this->repo->one(\auth()->user()->filial_id,$id);
+        //
     }
 
     /**
@@ -78,11 +75,7 @@ class BronController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $update = $this->repo->update(\auth()->user()->filial_id,$id,$request);
-        if ($update)
-            return response(['message'=>'success updated']);
-        else
-            return response(['message'=>'error updated']);
+        //
     }
 
     /**
@@ -93,7 +86,6 @@ class BronController extends Controller
      */
     public function destroy($id)
     {
-        $this->repo->delete(\auth()->user()->filial_id,$id);
-        return  response(['message'=>'success deleted']);
+        //
     }
 }

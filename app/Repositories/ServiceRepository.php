@@ -3,22 +3,22 @@ namespace App\Repositories;
 
 
 use App\Repositories\Interfaces\ServiceRepositoryInterface;
-use App\Models\Service;
+use App\Models\Services;
 
 
 class ServiceRepository implements ServiceRepositoryInterface
 {
 	public function all($filial_id)
 	{
-		return Service::where(['filial_id'=>$filial_id])->paginate();
+		return Services::where(['filial_id'=>$filial_id])->paginate();
 	}
 	public function one($filial_id,$id)
 	{
-		return Service::where(['id'=>$id,'filial_id'=>$filial_id])->first();
+		return Services::where(['id'=>$id,'filial_id'=>$filial_id])->first();
 	}
 	public function create($filial_id,$data)
 	{
-		$create = Service::create([
+		$create = Services::create([
 			'filial_id'=>$filial_id,
 			'name'=>$data['name'],
 			'price'=>$data['price'],
@@ -33,7 +33,7 @@ class ServiceRepository implements ServiceRepositoryInterface
 	public function update($id,$filial_id,$data)
 	{
 		if ($this->one($filial_id,$id)) {
-			$update = Service::where(['id'=>$id,'filial_id'=>$filial_id])->update([
+			$update = Services::where(['id'=>$id,'filial_id'=>$filial_id])->update([
 				'name'=>$data['name'],
 				'price'=>$data['price'],
 				'price_vip'=>$data['price_vip'],
@@ -55,9 +55,9 @@ class ServiceRepository implements ServiceRepositoryInterface
 		if (!$this->one($filial_id,$id)) {
 			return response(['message'=>'not found service'],404);
 		}
-		$status = $this->one()->status == 'active':'inactive'?'active';
+		$status = $this->one($id)->status == 'active'?'inactive':'active';
 
-		$upd = Service::where(['filial_id'=>$filial_id)->destroy($id);
+		$upd = Services::where(['filial_id'=>$filial_id])->destroy($id);
 		if ($upd) {
 			return true;
 		}
@@ -71,6 +71,6 @@ class ServiceRepository implements ServiceRepositoryInterface
 		if (!$this->one($filial_id,$id)) {
 			return response(['message'=>'not found service'],404);
 		}
-		$status = $this->one()->status == 'active':'inactive'?'active';
+		$status = $this->one()->status == 'active'?'inactive':'active';
 	}
 }

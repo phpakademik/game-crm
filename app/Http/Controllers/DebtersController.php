@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DebtersCreateRequest;
+use App\Http\Requests\DebtersUpdateRequest;
 use Illuminate\Http\Request;
+use App\Repositories\Interfaces\DebtersRepository;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\BronRepository;
-use App\Http\Requests\BronCreateRequest;
 
-class BronController extends Controller
+class DebtersController extends Controller
 {
     private $repo;
 
     public function __construct()
     {
-        $this->repo = new BronRepository();
+        $this->repo = new DebtersRepository();
     }
 
     /**
@@ -23,7 +24,7 @@ class BronController extends Controller
      */
     public function index()
     {
-        return $this->repo->all(\auth()->user()->filial_id);
+        return $this->repo->all(Auth::user()->filial_id);
     }
 
     /**
@@ -42,20 +43,21 @@ class BronController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BronCreateRequest $request)
+    public function store(DebtersCreateRequest $request)
     {
-        $this->repo->create(\auth()->user()->filial_id,$request);
-        return response(['message'=>'success created']);
+        $this->repo->create(Auth::user()->filialid,$request);
+        return  response(['message'=>'success create']);
     }
 
     /**
      * Display the specified resource.
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        return $this->repo->one(\auth()->user()->filial_id,$id);
+        return  $this->repo->one(Auth::user()->filial_id,$id);
     }
 
     /**
@@ -76,13 +78,9 @@ class BronController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DebtersUpdateRequest $request, $id)
     {
-        $update = $this->repo->update(\auth()->user()->filial_id,$id,$request);
-        if ($update)
-            return response(['message'=>'success updated']);
-        else
-            return response(['message'=>'error updated']);
+        return $this->repo->update(Auth::user()->filial_id,$id,$request);
     }
 
     /**
@@ -93,7 +91,7 @@ class BronController extends Controller
      */
     public function destroy($id)
     {
-        $this->repo->delete(\auth()->user()->filial_id,$id);
+        $this->repo->delete(Auth::user()->filial_id,$id);
         return  response(['message'=>'success deleted']);
     }
 }

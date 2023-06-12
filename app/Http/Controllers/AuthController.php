@@ -15,7 +15,7 @@ class AuthController extends Controller
 		$user = User::where(['username'=>$request->input('username')])->first();
 		if (!$user or Hash::check($request->input('password'),$user->password))	 {
 		    return response(['message'=>'error'],401);
-		}    	
+		}
 		$token = $user->createToken('api_token')->plainText;
 		return response([
 			'token'=>$token,

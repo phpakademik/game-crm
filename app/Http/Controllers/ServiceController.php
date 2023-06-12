@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Auth;
 use App\Models\Services;
-use App\Request\ServiceCreateRequest;
-use App\Request\ServiceUpdateRequest;
+use App\Http\Requests\ServiceCreateRequest;
+use App\Http\Requests\ServiceUpdateRequest;
 use App\Repositories\ServiceRepository;
 
 
