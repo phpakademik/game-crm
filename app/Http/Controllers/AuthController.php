@@ -10,7 +10,7 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-	public function (LoginRequest $request)
+	public function login(LoginRequest $request)
 	{
 		$user = User::where(['username'=>$request->input('username')])->first();
 		if (!$user or Hash::check($request->input('password'),$user->password))	 {
