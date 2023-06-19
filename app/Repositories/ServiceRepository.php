@@ -69,8 +69,12 @@ class ServiceRepository implements ServiceRepositoryInterface
 	public function setStatus($filial_id,$id)
 	{
 		if (!$this->one($filial_id,$id)) {
-			return response(['message'=>'not found service'],404);
+			return 'not_found_service';
 		}
-		$status = $this->one()->status == 'active'?'inactive':'active';
+		$status = $this->one($filial_id,$id)->status == 'active'?'inactive':'active';
+		Services::where(['filial_id'=>$filial_id,'id'=>$id])->update([
+		    'status'=>$status
+        ]);
+		return  true;
 	}
 }

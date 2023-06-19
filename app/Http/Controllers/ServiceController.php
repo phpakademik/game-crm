@@ -107,4 +107,12 @@ class ServiceController extends Controller
         $this->respository->delete(\auth()->user()->filial_id,$id);
         return response(['message'=>'Success deleted'],200);
     }
+    public function setStatus($id)
+    {
+        $status = $this->respository->setStatus(\auth()->user()->filial_id,$id);
+        if ($status)
+            return response(['message'=>'success']);
+        else if($status == 'not_found_service')
+            return  response(['message'=>'not found service'],404);
+    }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\BronController;
 use App\Http\Controllers\DebtersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\WorkdateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,16 +22,25 @@ use App\Http\Controllers\ServiceController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
 Route::post('/login',[AuthController::class,'login']);
 
 Route::group(['middleware'=>'auth'],function (){
-    Route::resource('/services',ServiceController::class);
+//    Route::resource('/services',ServiceController::class);
+    Route::group(['prefix'=>'/services'],function (){
+       Route::get('/',[ServiceController::class,'index']);
+       Route::post('/',[ServiceController::class,'store']);
+       Route::get('/{id}',[ServiceController::class,'show']);
+       Route::put('/{id}',[ServiceController::class,'update']);
+       Route::delete('/{id}',[ServiceController::class,'destroy']);
+       Route::get('/set-status/{id}',[ServiceController::class,'setStatus']);
+    });
     Route::resource('/brons',BronController::class);
     Route::resource('/debters',DebtersController::class);
-    Route::get('/test',[\App\Http\Controllers\TestController::class,'index']);
+    Route::post('/work/start',[WorkdateController::class,'start']);
+    Route::post('/work/end',[WorkdateController::class,'end']);
+    Route::group(['prefix'=>'/profile'],function (){
+       Route::get('/{id}',[ProfileController::class,'show']);
+       Route::post('/create',[ProfileController::class,'store']);
+       Route::post('/update/{id}',[ProfileController::class,'update']);
+    });
 });
